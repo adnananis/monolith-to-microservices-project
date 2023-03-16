@@ -4,9 +4,8 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.8
-    environment:
-      DOCKER_USERNAME: $DOCKER_USERNAME
-      DOCKER_PASSWORD: $DOCKER_PASSWORD
+    environment:      
+      DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
@@ -14,5 +13,5 @@ jobs:
           name: Build and push Docker image
           command: |
             docker-compose -f docker-compose-build.yaml build
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker-compose -f docker-compose-build.yaml push
