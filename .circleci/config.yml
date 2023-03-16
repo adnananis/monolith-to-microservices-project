@@ -14,5 +14,5 @@ jobs:
           command: |
             docker-compose -f docker-compose-build.yaml build
             docker logout
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker login -u adnananis --password-stdin
             docker-compose -f docker-compose-build.yaml push
