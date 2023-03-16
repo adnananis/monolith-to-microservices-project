@@ -12,6 +12,6 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker-compose -f docker-compose-build.yaml build --parallel
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker-compose -f docker-compose-build.yaml push --parallel
+            docker-compose -f docker-compose-build.yaml push
