@@ -6,16 +6,8 @@ jobs:
       - image: circleci/node:14-browsers
     working_directory: ~/app
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: node-v1-{{ checksum "package.json" }}
+      - checkout      
+      - run: npm install      
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
