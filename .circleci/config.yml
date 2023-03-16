@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/udagram-api-user
     steps:
       - checkout      
-      - run: npm install      
+      - run: yarn install
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
