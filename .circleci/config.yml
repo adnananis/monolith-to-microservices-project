@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |            
-            docker build -t adnananis/udagram-api-user .
+            docker build -t adnananis/udagram-api-user:latest -f udagram-api-user/Dockerfile .
           environment:
             DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
       - run:
