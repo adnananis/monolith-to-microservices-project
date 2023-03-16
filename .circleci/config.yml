@@ -15,7 +15,9 @@ jobs:
       - run:
           name: Build and tag Docker images
           command: |
-            docker-compose -f docker-compose-build.yaml push           
+            docker-compose -f docker-compose-build.yaml build
+            docker tag my-image:latest adnananis/my-image:latest
+            docker tag my-other-image:latest adnananis/my-other-image:latest
       - docker:
           registry: adnananis
           username: $DOCKER_USERNAME
@@ -24,4 +26,5 @@ jobs:
           command: push
           tags:
             - latest
-            
+            - my-image:latest
+            - my-other-image:latest
