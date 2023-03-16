@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Build and tag Docker images
           command: |
-            docker-compose -f ./docker-compose-build.yaml build --parallel           
+            docker-compose -f docker-compose-build.yaml push           
       - docker:
           registry: adnananis
           username: $DOCKER_USERNAME
