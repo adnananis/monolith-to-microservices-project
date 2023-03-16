@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:14-browsers
-    working_directory: ~/app
+    working_directory: ~/udagram-api-user
     steps:
       - checkout      
       - run: npm install      
@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |            
-            docker build -t adnananis/udagram-api-user:latest -f udagram-api-user/Dockerfile .
+            docker build -t adnananis/udagram-api-user .
           environment:
             DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
       - run:
@@ -22,39 +22,6 @@ jobs:
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push adnananis/udagram-api-user
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t adnananis/udagram-api-feed -f udagram-api-feed/Dockerfile .
-          environment:
-            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
-      - run:
-          name: Push Docker image to Docker Hub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push adnananis/udagram-api-feed 
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t adnananis/udagram-frontend -f udagram-frontend/Dockerfile .
-          environment:
-            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
-      - run:
-          name: Push Docker image to Docker Hub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push adnananis/udagram-frontend  
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t adnananis/reverseproxy -f reverseproxy/Dockerfile .
-          environment:
-            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
-      - run:
-          name: Push Docker image to Docker Hub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push adnananis/reverseproxy         
 
 workflows:
   version: 2
