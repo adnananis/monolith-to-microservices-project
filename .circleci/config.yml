@@ -1,0 +1,74 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14-browsers
+    working_directory: ~/app
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: node-v1-{{ checksum "package.json" }}
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t adnananis/udagram-api-user .
+          environment:
+            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+      - run:
+          name: Push Docker image to Docker Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push adnananis/udagram-api-user
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t adnananis/udagram-api-feed .
+          environment:
+            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+      - run:
+          name: Push Docker image to Docker Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push adnananis/udagram-api-feed 
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t adnananis/udagram-frontend .
+          environment:
+            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+      - run:
+          name: Push Docker image to Docker Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push adnananis/udagram-frontend  
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t adnananis/reverseproxy .
+          environment:
+            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+      - run:
+          name: Push Docker image to Docker Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push adnananis/reverseproxy         
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
