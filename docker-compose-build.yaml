@@ -15,4 +15,4 @@ services:
   frontend:
     build:
       context: ./udagram-frontend
-    image: adnananis/udagram-frontend:local
+    image: adnananis/udagram-frontend
